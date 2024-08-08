@@ -1,6 +1,9 @@
 const { StatusCodes } = require("http-status-codes");
 const { z } = require("zod");
 
+// Validate a DTO against a Zod schema
+// If the DTO is invalid, it returns a 400 response with the error details
+// If an unexpected error occurs, it returns a 500 response
 function validateDto(schema) {
   return (req, res, next) => {
     try {

@@ -1,5 +1,7 @@
 const { DataSource } = require("typeorm");
 
+// Create a new DataSource instance
+// The DataSource class is used to connect to the database
 const dataSource = new DataSource({
   type: "mariadb",
   host: process.env.DATABASE_URL || "localhost",

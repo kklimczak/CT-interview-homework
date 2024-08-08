@@ -1,5 +1,6 @@
 const { StatusCodes } = require("http-status-codes");
 
+// Custom error class to handle application errors
 class AppError extends Error {
   constructor(statusCode, message) {
     super();
@@ -8,6 +9,7 @@ class AppError extends Error {
   }
 }
 
+// Error handler middleware
 function errorHandler(err, req, res, _next) {
   console.log(err);
   if (err instanceof AppError) {
