@@ -1,7 +1,7 @@
-import { StatusCodes } from "http-status-codes";
-import { z } from "zod";
+const { StatusCodes } = require("http-status-codes");
+const { z } = require("zod");
 
-export function validateDto(schema) {
+function validateDto(schema) {
   return (req, res, next) => {
     try {
       schema.parse(req.body);
@@ -23,3 +23,5 @@ export function validateDto(schema) {
     }
   };
 }
+
+module.exports = { validateDto };

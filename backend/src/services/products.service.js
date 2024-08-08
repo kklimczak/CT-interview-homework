@@ -1,6 +1,16 @@
-import { dataSource } from "../config/data-source.js";
-import { ProductEntity } from "../entities/product.entity.js";
+const { dataSource } = require("../config/data-source");
+const { ProductEntity } = require("../entities/product.entity");
 
-export async function findProducts() {
+async function findProducts() {
   return dataSource.getRepository(ProductEntity).find();
 }
+
+async function createProduct(productDto) {
+  const product = dataSource.getRepository(ProductEntity).create(productDto);
+  return dataSource.getRepository(ProductEntity).save(product);
+}
+
+module.exports = {
+  findProducts,
+  createProduct,
+};

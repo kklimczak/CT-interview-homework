@@ -1,6 +1,6 @@
-import { DataSource } from "typeorm";
+const { DataSource } = require("typeorm");
 
-export const dataSource = new DataSource({
+const dataSource = new DataSource({
   type: "mariadb",
   host: process.env.DATABASE_URL || "localhost",
   port: process.env.DATABASE_PORT || 3306,
@@ -8,10 +8,10 @@ export const dataSource = new DataSource({
   password: process.env.DATABASE_PASSWORD || "warehouse_password",
   database: process.env.DATABASE_NAME || "warehouse",
   synchronize: true,
-  entities: ["./entities/*.js"],
+  entities: ["./src/entities/*.js"],
 });
 
-export async function initializeDb() {
+async function initializeDb() {
   try {
     await dataSource.initialize();
     console.log("Connected to the database");
@@ -19,3 +19,8 @@ export async function initializeDb() {
     console.error("Error connecting to the database", err);
   }
 }
+
+module.exports = {
+  dataSource,
+  initializeDb,
+};
