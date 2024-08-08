@@ -8,6 +8,7 @@ const logger = require("morgan");
 const { initializeDb } = require("./config/data-source");
 
 const { productsRouter } = require("./routes/products.router");
+const { errorHandler } = require("./middlewares/error-handler.middleware");
 
 const port = process.env.APP_PORT || 3000;
 
@@ -20,6 +21,8 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
 app.use("/api/products", productsRouter);
+
+app.use(errorHandler);
 
 async function start() {
   await initializeDb();
