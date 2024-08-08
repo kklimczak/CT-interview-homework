@@ -1,11 +1,10 @@
 import { Router } from "express";
-import { dataSource } from "../config/data-source.js";
-import { ProductEntity } from "../entities/product.entity.js";
+import { findProducts } from "../services/products.service.js";
 
 export const productsRouter = new Router();
 
 productsRouter.get("/", async (req, res) => {
-  const products = await dataSource.getRepository(ProductEntity).find();
+  const products = await findProducts();
 
   res.json(products);
 });
