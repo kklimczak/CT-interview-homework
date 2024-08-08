@@ -2,6 +2,7 @@ const {
   findProducts,
   createProduct,
   removeProduct,
+  updateProduct,
 } = require("./products.service");
 const { dataSource } = require("../config/data-source");
 const { ProductEntity } = require("../entities/product.entity");
@@ -74,5 +75,27 @@ describe("Products Service", () => {
       expect(error.message).toBe("Product not found");
       expect(error.statusCode).toBe(StatusCodes.NOT_FOUND);
     }
+  });
+
+  test("should update a product", async () => {
+    const product = {
+      id: 1,
+      name: "Product 1",
+      price: 100,
+    };
+    const updatedProduct = {
+      id: 1,
+      name: "Product 1 Updated",
+      price: 200,
+    };
+    dataSource.getRepository.mockReturnValue({
+      findOne: jest.fn(() => product),
+      save: jest.fn(() => updatedProduct),
+    });
+
+    const result = await updateProduct(product.id, updatedProduct);
+
+    expect(dataSource.getRepository).toHaveBeenCalledWith(ProductEntity);
+    expect(result).toEqual(updatedProduct);
   });
 });

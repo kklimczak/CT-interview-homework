@@ -23,8 +23,24 @@ async function removeProduct(id) {
   return dataSource.getRepository(ProductEntity).remove(product);
 }
 
+async function updateProduct(id, productDto) {
+  const product = await dataSource.getRepository(ProductEntity).findOne({
+    where: { id },
+  });
+  if (!product) {
+    throw new AppError(StatusCodes.NOT_FOUND, "Product not found");
+  }
+
+  Object.keys(productDto).forEach((key) => {
+    product[key] = productDto[key];
+  });
+
+  return dataSource.getRepository(ProductEntity).save(product);
+}
+
 module.exports = {
   findProducts,
   createProduct,
   removeProduct,
+  updateProduct,
 };

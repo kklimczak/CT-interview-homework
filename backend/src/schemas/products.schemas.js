@@ -6,6 +6,13 @@ const addProductDtoSchema = z.object({
   quantity: z.number().min(0).int(),
 });
 
+const updateProductDtoSchema = z.strictObject({
+  name: z.string().min(1).optional(),
+  price: z.number().min(0).positive().optional(),
+  quantity: z.number().min(0).int().optional(),
+});
+
 module.exports = {
   addProductDtoSchema,
+  updateProductDtoSchema,
 };

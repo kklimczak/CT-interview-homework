@@ -7,8 +7,12 @@ const {
   createProduct,
   findProducts,
   removeProduct,
+  updateProduct,
 } = require("../services/products.service");
-const { addProductDtoSchema } = require("../schemas/products.schemas");
+const {
+  addProductDtoSchema,
+  updateProductDtoSchema,
+} = require("../schemas/products.schemas");
 const { AppError } = require("../middlewares/error-handler.middleware");
 
 const productsRouter = new Router();
@@ -39,6 +43,25 @@ productsRouter.delete("/:id", async (req, res, next) => {
     next(error);
   }
 });
+
+productsRouter.patch(
+  "/:id",
+  validateDto(updateProductDtoSchema),
+  async (req, res, next) => {
+    const { id } = req.params;
+
+    if (!id) {
+      next(new AppError(StatusCodes.BAD_REQUEST, "Missing id param!"));
+    }
+
+    try {
+      const updatedProduct = await updateProduct(id, req.body);
+      res.json(updatedProduct);
+    } catch (error) {
+      next(error);
+    }
+  },
+);
 
 module.exports = {
   productsRouter,
