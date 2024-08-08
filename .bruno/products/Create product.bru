@@ -1,0 +1,19 @@
+meta {
+  name: Create product
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{host}}/products
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "name": "Rama apex",
+    "price": 20,
+    "quantity": 2
+  }
+}
