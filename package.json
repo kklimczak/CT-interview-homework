@@ -13,5 +13,9 @@
   },
   "lint-staged": {
     "**/*": "prettier --write --ignore-unknown"
+  },
+  "dependencies": {
+    "http-status-codes": "^2.3.0",
+    "zod": "^3.23.8"
   }
 }
