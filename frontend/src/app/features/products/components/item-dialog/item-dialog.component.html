@@ -40,5 +40,7 @@
       label="Description"
     ></app-input-error>
   </span>
-  <button class="form__button" type="submit" (click)="submitForm()">Add</button>
+  <button class="form__button" type="submit" (click)="submitForm()">
+    {{ submitButtonLabel }}
+  </button>
 </form>

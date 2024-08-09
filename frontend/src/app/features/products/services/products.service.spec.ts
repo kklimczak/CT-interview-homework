@@ -101,4 +101,29 @@ describe('ProductsService', () => {
 
     httpTestingController.verify();
   });
+
+  it('should edit product', () => {
+    const id = 1;
+    const product: Omit<WarehouseItem, 'id'> = {
+      imageUrl: 'http://example.com/image.jpg',
+      name: 'Product 1',
+      description: 'Description 1',
+      quantity: 10,
+      price: 100,
+    };
+
+    service.editProduct(id, product).subscribe((data: WarehouseItem) => {
+      expect(data).toEqual({ id, ...product });
+    });
+
+    const req = httpTestingController.expectOne(
+      `${environment.apiUrl}/products/${id}`,
+    );
+
+    expect(req.request.method).toEqual('PATCH');
+
+    req.flush({ id, ...product });
+
+    httpTestingController.verify();
+  });
 });

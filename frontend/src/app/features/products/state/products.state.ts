@@ -91,4 +91,19 @@ export class ProductsState {
         });
       });
   }
+
+  editProduct(id: number, product: Omit<WarehouseItem, 'id' | 'imageUrl'>) {
+    this.productService
+      .editProduct(id, { ...product, imageUrl: 'assets/logo_black.svg' })
+      .subscribe((editedProduct: WarehouseItem) => {
+        const state = this.#state.getValue();
+        this.#state.next({
+          ...state,
+          entities: {
+            ...state.entities,
+            [editedProduct.id]: editedProduct,
+          },
+        });
+      });
+  }
 }

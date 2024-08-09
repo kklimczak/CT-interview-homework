@@ -14,6 +14,8 @@ import { WarehouseItem } from '../../../../core/models/warehouseItem';
   styleUrls: ['./item-dialog.component.scss'],
 })
 export class ItemDialogComponent {
+  submitButtonLabel: 'Add' | 'Edit' = 'Add';
+
   itemForm = this.fb.group({
     name: ['', [Validators.required]],
     description: ['', [Validators.required]],
@@ -26,10 +28,14 @@ export class ItemDialogComponent {
 
   constructor(
     private fb: FormBuilder,
-    private dialogRef: DialogRef<Omit<WarehouseItem, 'id' | 'imageUrl'>>,
+    private dialogRef: DialogRef<{
+      mode: 'Add' | 'Edit';
+      values: Omit<WarehouseItem, 'id' | 'imageUrl'>;
+    }>,
     @Inject(DIALOG_DATA) data: Omit<WarehouseItem, 'id' | 'imageUrl'>,
   ) {
     if (data) {
+      this.submitButtonLabel = 'Edit';
       this.itemForm.setValue(data);
     }
   }
@@ -39,7 +45,10 @@ export class ItemDialogComponent {
     if (this.itemForm.valid) {
       const { name, description, quantity, price } = this.itemForm.value;
       if (name && description && quantity && price) {
-        this.dialogRef.close({ name, description, quantity, price });
+        this.dialogRef.close({
+          mode: this.submitButtonLabel,
+          values: { name, description, quantity, price },
+        });
       }
     }
   }

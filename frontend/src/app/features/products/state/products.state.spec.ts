@@ -19,6 +19,8 @@ describe('ProductsState', () => {
             removeProduct: (id: number) => of(''),
             addProduct: (product: Omit<WarehouseItem, 'id'>) =>
               of(product as WarehouseItem),
+            editProduct: (id: number, product: Omit<WarehouseItem, 'id'>) =>
+              of(product as WarehouseItem),
           },
         },
       ],
@@ -242,6 +244,100 @@ describe('ProductsState', () => {
       });
 
       expect(addProductSpy).toHaveBeenCalledWith(product);
+    });
+  });
+
+  it('should edit product', () => {
+    const scheduler = new TestScheduler((actual, expected) => {
+      expect(actual).toEqual(expected);
+    });
+
+    const mockedProducts = [
+      {
+        imageUrl: 'assets/logo_black.svg',
+        id: 1,
+        name: 'Product 1',
+        description: 'Description 1',
+        quantity: 10,
+        price: 100,
+      },
+      {
+        imageUrl: 'assets/logo_black.svg',
+        id: 2,
+        name: 'Product 2',
+        description: 'Description 2',
+        quantity: 20,
+        price: 200,
+      },
+    ];
+
+    // Override the initial state to have products
+    TestBed.overrideProvider(INITIAL_PRODUCT_STATE, {
+      useValue: {
+        ids: [1, 2],
+        entities: {
+          1: {
+            imageUrl: 'assets/logo_black.svg',
+            id: 1,
+            name: 'Product 1',
+            description: 'Description 1',
+            quantity: 10,
+            price: 100,
+          },
+          2: {
+            imageUrl: 'assets/logo_black.svg',
+            id: 2,
+            name: 'Product 2',
+            description: 'Description 2',
+            quantity: 20,
+            price: 200,
+          },
+        },
+        pending: false,
+      },
+    });
+
+    service = TestBed.inject(ProductsState);
+
+    const product = {
+      imageUrl: 'assets/logo_black.svg',
+      name: 'Product 2',
+      description: 'Description 2',
+      quantity: 30,
+      price: 300,
+    };
+
+    const productsService = TestBed.inject(ProductsService);
+
+    scheduler.run(({ expectObservable, cold }) => {
+      const editProductSpy = spyOn(
+        productsService,
+        'editProduct',
+      ).and.returnValue(cold('--a|', { a: { ...product, id: 2 } }));
+
+      service.editProduct(2, product);
+
+      expectObservable(service.products$).toBe('a-b', {
+        a: mockedProducts,
+        b: [
+          {
+            imageUrl: 'assets/logo_black.svg',
+            id: 1,
+            name: 'Product 1',
+            description: 'Description 1',
+            quantity: 10,
+            price: 100,
+          },
+          {
+            imageUrl: 'assets/logo_black.svg',
+            id: 2,
+            name: 'Product 2',
+            description: 'Description 2',
+            quantity: 30,
+            price: 300,
+          },
+        ],
+      });
     });
   });
 });

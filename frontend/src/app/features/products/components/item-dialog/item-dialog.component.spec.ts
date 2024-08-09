@@ -20,7 +20,7 @@ describe('ItemDialogComponent', () => {
         },
         {
           provide: DIALOG_DATA,
-          useValue: {},
+          useValue: null,
         },
       ],
     }).compileComponents();

@@ -22,19 +22,39 @@ export class ItemsListComponent {
     private cdkDialog: Dialog,
   ) {}
 
-  openAddItemDialog(): void {
-    const dialogRef = this.cdkDialog.open<
-      Omit<WarehouseItem, 'id' | 'imageUrl'>
-    >(ItemDialogComponent, {
+  openItemDialog(
+    id?: number,
+    data?: Omit<WarehouseItem, 'id' | 'imageUrl'>,
+  ): void {
+    const dialogRef = this.cdkDialog.open<{
+      mode: 'Add' | 'Edit';
+      values: Omit<WarehouseItem, 'id' | 'imageUrl'>;
+    }>(ItemDialogComponent, {
       hasBackdrop: true,
       width: '400px',
+      data,
     });
 
     dialogRef.closed.subscribe((result) => {
       if (result) {
-        this.productsState.addProduct(result);
+        const { mode, values } = result;
+        if (mode === 'Add') {
+          this.productsState.addProduct(values);
+        } else if (mode === 'Edit' && id) {
+          this.productsState.editProduct(id, values);
+          return;
+        }
       }
     });
+  }
+
+  openAddItemDialog(): void {
+    this.openItemDialog();
+  }
+
+  openEditItemDialog(item: WarehouseItem): void {
+    const { id, imageUrl, ...data } = item;
+    this.openItemDialog(id, data);
   }
 
   removeProduct(id: number) {

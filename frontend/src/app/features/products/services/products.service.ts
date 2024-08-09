@@ -25,4 +25,11 @@ export class ProductsService {
       product,
     );
   }
+
+  editProduct(id: number, product: Omit<WarehouseItem, 'id'>) {
+    return this.httpClient.patch<WarehouseItem>(
+      `${this.apiUrl}/products/${id}`,
+      product,
+    );
+  }
 }
