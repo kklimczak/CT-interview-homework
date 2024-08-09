@@ -1,4 +1,13 @@
-<button class="button" (click)="openAddItemDialog()">➕ Add product</button>
+<div class="actions">
+  <button class="button" (click)="openAddItemDialog()">➕ Add product</button>
+  <button
+    class="button"
+    (click)="resetShipment()"
+    *ngIf="shipmentMode$ | async"
+  >
+    🧻 Reset shipment
+  </button>
+</div>
 <div class="items-list">
   <app-list-item
     *ngFor="let item of items$ | async"

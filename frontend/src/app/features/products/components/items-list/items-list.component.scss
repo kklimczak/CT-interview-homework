@@ -1,6 +1,12 @@
 :host {
   width: 100%;
 
+  .actions {
+    display: flex;
+    flex-direction: row;
+    gap: 15px;
+  }
+
   .button {
     cursor: pointer;
     border: 0;

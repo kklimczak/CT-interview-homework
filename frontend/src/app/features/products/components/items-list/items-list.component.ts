@@ -18,6 +18,7 @@ export class ItemsListComponent {
   items$: Observable<WarehouseItem[]> = this.productsState.products$;
   shipmentQuantityById$: Observable<{ [key: number]: number }> =
     this.productsState.shipmentQuantityById$;
+  shipmentMode$: Observable<boolean> = this.productsState.shipmentMode$;
 
   constructor(
     private productsState: ProductsState,
@@ -69,5 +70,9 @@ export class ItemsListComponent {
 
   removeItemFromShipment(id: number): void {
     this.productsState.addShipmentValue(id, -1);
+  }
+
+  resetShipment(): void {
+    this.productsState.resetShipment();
   }
 }

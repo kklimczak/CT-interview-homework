@@ -1,6 +1,6 @@
 import { Inject, Injectable, InjectionToken } from '@angular/core';
 import { ProductsService } from '../services/products.service';
-import { BehaviorSubject, map } from 'rxjs';
+import { BehaviorSubject, map, Observable } from 'rxjs';
 import { WarehouseItem } from '../../../core/models/warehouseItem';
 import { EntityState } from '../../../shared/models/entity-state';
 
@@ -42,6 +42,15 @@ export class ProductsState {
   shipmentQuantityById$ = this.#state
     .asObservable()
     .pipe(map((state) => state.shipmentQuantityById));
+  shipmentMode$: Observable<boolean> = this.#state.pipe(
+    map(
+      (state) =>
+        Object.keys(state.shipmentQuantityById).length > 0 ||
+        Object.keys(state.shipmentQuantityById).some(
+          (id) => state.shipmentQuantityById[Number(id)] > 0,
+        ),
+    ),
+  );
 
   loadProducts() {
     this.#state.next({
@@ -131,6 +140,14 @@ export class ProductsState {
     this.#state.next({
       ...state,
       shipmentQuantityById,
+    });
+  }
+
+  resetShipment() {
+    const state = this.#state.getValue();
+    this.#state.next({
+      ...state,
+      shipmentQuantityById: {},
     });
   }
 }
