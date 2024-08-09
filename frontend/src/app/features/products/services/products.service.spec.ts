@@ -61,4 +61,20 @@ describe('ProductsService', () => {
 
     httpTestingController.verify();
   });
+
+  it('should remove product', () => {
+    const id = 1;
+
+    service.removeProduct(id).subscribe();
+
+    const req = httpTestingController.expectOne(
+      `${environment.apiUrl}/products/${id}`,
+    );
+
+    expect(req.request.method).toEqual('DELETE');
+
+    req.flush({});
+
+    httpTestingController.verify();
+  });
 });

@@ -17,6 +17,10 @@ export class ItemsListComponent {
 
   constructor(private productsState: ProductsState) {}
 
+  removeProduct(id: number) {
+    this.productsState.removeProduct(id);
+  }
+
   addItemToShipment(id: number): void {
     // this.itemsMockService.addToShipment(id);
   }

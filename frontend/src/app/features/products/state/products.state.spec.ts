@@ -1,13 +1,9 @@
 import { TestBed } from '@angular/core/testing';
 
-import { ProductsState } from './products.state';
+import { INITIAL_PRODUCT_STATE, ProductsState } from './products.state';
 import { ProductsService } from '../services/products.service';
-import { combineLatest, of } from 'rxjs';
+import { of } from 'rxjs';
 import { TestScheduler } from 'rxjs/testing';
-
-const scheduler = new TestScheduler((actual, expected) => {
-  expect(actual).toEqual(expected);
-});
 
 describe('ProductsState', () => {
   let service: ProductsState;
@@ -19,18 +15,24 @@ describe('ProductsState', () => {
           provide: ProductsService,
           useValue: {
             getProducts: () => of([]),
+            removeProduct: (id: number) => of(''),
           },
         },
       ],
     });
-    service = TestBed.inject(ProductsState);
   });
 
   it('should be created', () => {
+    service = TestBed.inject(ProductsState);
     expect(service).toBeTruthy();
   });
 
   it('should load products', () => {
+    const scheduler = new TestScheduler((actual, expected) => {
+      expect(actual).toEqual(expected);
+    });
+
+    service = TestBed.inject(ProductsState);
     const mockedProducts = [
       {
         imageUrl: 'http://example.com/image.jpg',
@@ -67,6 +69,87 @@ describe('ProductsState', () => {
       expectObservable(service.pending$).toBe('a-b', { a: true, b: false });
 
       expect(getProductsSpy).toHaveBeenCalled();
+    });
+  });
+
+  it('should remove product', () => {
+    const scheduler = new TestScheduler((actual, expected) => {
+      expect(actual).toEqual(expected);
+    });
+
+    const mockedProducts = [
+      {
+        imageUrl: 'http://example.com/image.jpg',
+        id: 1,
+        name: 'Product 1',
+        description: 'Description 1',
+        quantity: 10,
+        price: 100,
+      },
+      {
+        imageUrl: 'http://example.com/image.jpg',
+        id: 2,
+        name: 'Product 2',
+        description: 'Description 2',
+        quantity: 20,
+        price: 200,
+      },
+    ];
+
+    // Override the initial state to have products
+    TestBed.overrideProvider(INITIAL_PRODUCT_STATE, {
+      useValue: {
+        ids: [1, 2],
+        entities: {
+          1: {
+            imageUrl: 'http://example.com/image.jpg',
+            id: 1,
+            name: 'Product 1',
+            description: 'Description 1',
+            quantity: 10,
+            price: 100,
+          },
+          2: {
+            imageUrl: 'http://example.com/image.jpg',
+            id: 2,
+            name: 'Product 2',
+            description: 'Description 2',
+            quantity: 20,
+            price: 200,
+          },
+        },
+        pending: false,
+      },
+    });
+
+    service = TestBed.inject(ProductsState);
+
+    const id = 1;
+    const productsService = TestBed.inject(ProductsService);
+
+    scheduler.run(({ expectObservable, cold }) => {
+      const removeProductSpy = spyOn(
+        productsService,
+        'removeProduct',
+      ).and.returnValue(cold('--a|', { a: {} }));
+
+      service.removeProduct(id);
+
+      expectObservable(service.products$).toBe('a-b', {
+        a: mockedProducts,
+        b: [
+          {
+            imageUrl: 'http://example.com/image.jpg',
+            id: 2,
+            name: 'Product 2',
+            description: 'Description 2',
+            quantity: 20,
+            price: 200,
+          },
+        ],
+      });
+
+      expect(removeProductSpy).toHaveBeenCalledWith(1);
     });
   });
 });

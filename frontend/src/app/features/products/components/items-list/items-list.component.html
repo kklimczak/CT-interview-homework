@@ -2,6 +2,7 @@
   <app-list-item
     *ngFor="let item of items$ | async"
     [item]="item"
+    (removeItem)="removeProduct(item.id)"
     (addToShipment)="addItemToShipment(item.id)"
   >
   </app-list-item>

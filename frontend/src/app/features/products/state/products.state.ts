@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Inject, Injectable, InjectionToken } from '@angular/core';
 import { ProductsService } from '../services/products.service';
 import { BehaviorSubject, map } from 'rxjs';
 import { WarehouseItem } from '../../../core/models/warehouseItem';
@@ -7,6 +7,11 @@ import { EntityState } from '../../../shared/models/entity-state';
 export interface ProductState extends EntityState<WarehouseItem> {
   pending: boolean;
 }
+
+export const INITIAL_PRODUCT_STATE = new InjectionToken('initialProductState', {
+  providedIn: 'root',
+  factory: () => initialState,
+});
 
 const initialState: ProductState = {
   ids: [],
@@ -18,9 +23,14 @@ const initialState: ProductState = {
   providedIn: 'root',
 })
 export class ProductsState {
-  constructor(private productService: ProductsService) {}
+  constructor(
+    private productService: ProductsService,
+    @Inject(INITIAL_PRODUCT_STATE) private initialState: ProductState,
+  ) {}
 
-  #state: BehaviorSubject<ProductState> = new BehaviorSubject(initialState);
+  #state: BehaviorSubject<ProductState> = new BehaviorSubject(
+    this.initialState,
+  );
 
   products$ = this.#state
     .asObservable()
@@ -48,6 +58,20 @@ export class ProductsState {
         ids,
         entities,
         pending: false,
+      });
+    });
+  }
+
+  removeProduct(id: number) {
+    this.productService.removeProduct(id).subscribe(() => {
+      const state = this.#state.getValue();
+      const ids = state.ids.filter((productId) => productId !== id);
+      const { [id]: removed, ...entities } = state.entities;
+
+      this.#state.next({
+        ...state,
+        ids,
+        entities,
       });
     });
   }

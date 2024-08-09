@@ -12,6 +12,7 @@ import { WarehouseItem } from '../../../../core/models/warehouseItem';
 export class ListItemComponent {
   @Input() item: WarehouseItem;
   @Output() addToShipment: EventEmitter<void> = new EventEmitter<void>();
+  @Output() removeItem: EventEmitter<void> = new EventEmitter<void>();
 
   constructor() {}
 }
