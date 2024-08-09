@@ -52,7 +52,7 @@ shipmentRouter.post(
 
     await dataSource.getRepository(ProductEntity).save(productsReadyToUpdate);
 
-    res.sendStatus(StatusCodes.OK);
+    res.json({ message: "Shipment added successfully" });
   },
 );
 
