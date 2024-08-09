@@ -18,6 +18,12 @@ const ProductEntity = new EntitySchema({
     quantity: {
       type: "int",
     },
+    description: {
+      type: "text",
+    },
+    imageUrl: {
+      type: "varchar",
+    },
   },
 });
 
