@@ -13,10 +13,18 @@ describe('ListItemComponent', () => {
 
     fixture = TestBed.createComponent(ListItemComponent);
     component = fixture.componentInstance;
+    component.item = {
+      imageUrl: 'http://example.com/image.jpg',
+      id: 1,
+      name: 'Product 1',
+      description: 'Description 1',
+      quantity: 10,
+      price: 100,
+    };
     fixture.detectChanges();
   });
 
-  xit('should create', () => {
+  it('should create', () => {
     expect(component).toBeTruthy();
   });
 });
