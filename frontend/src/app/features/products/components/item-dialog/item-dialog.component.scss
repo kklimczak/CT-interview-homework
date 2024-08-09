@@ -1,0 +1,40 @@
+:host {
+  display: block;
+  background: #fff;
+  border-radius: 8px;
+  padding: 16px;
+
+  .form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+
+    &__control {
+      display: flex;
+      flex-direction: column;
+    }
+
+    &__input {
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      padding: 8px;
+      font-size: 16px;
+    }
+
+    &__error {
+      color: red;
+      font-size: 0.8rem;
+    }
+
+    &__button {
+      cursor: pointer;
+      border: 0;
+      border-radius: 7px;
+      padding: 0 10px;
+      height: 40px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+  }
+}

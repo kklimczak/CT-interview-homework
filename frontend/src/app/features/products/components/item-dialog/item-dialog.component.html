@@ -1,0 +1,44 @@
+<h2>Add product</h2>
+<form [formGroup]="itemForm" class="form">
+  <label class="form__control">
+    Name
+    <input class="form__input" type="text" formControlName="name" />
+  </label>
+  <span class="form__error">
+    <app-input-error
+      [control]="itemForm.get('name')"
+      label="Name"
+    ></app-input-error>
+  </span>
+  <label class="form__control">
+    Price
+    <input class="form__input" type="number" formControlName="price" />
+  </label>
+  <span class="form__error">
+    <app-input-error
+      [control]="itemForm.get('price')"
+      label="Price"
+    ></app-input-error>
+  </span>
+  <label class="form__control">
+    Quantity
+    <input class="form__input" type="number" formControlName="quantity" />
+  </label>
+  <span class="form__error">
+    <app-input-error
+      [control]="itemForm.get('quantity')"
+      label="Quanitity"
+    ></app-input-error>
+  </span>
+  <label class="form__control">
+    Description
+    <textarea class="form__input" formControlName="description"></textarea>
+  </label>
+  <span class="form__error">
+    <app-input-error
+      [control]="itemForm.get('description')"
+      label="Description"
+    ></app-input-error>
+  </span>
+  <button class="form__button" type="submit" (click)="submitForm()">Add</button>
+</form>

@@ -1,0 +1,14 @@
+<ng-container *ngIf="control?.touched">
+  <ng-container *ngIf="control?.hasError('required')">
+    {{ label }} is required.
+  </ng-container>
+  <ng-container *ngIf="control?.hasError('min')">
+    {{ label }} must be at least {{ control?.getError("min")?.min }}.
+  </ng-container>
+  <ng-container *ngIf="control?.hasError('positive')">
+    {{ label }} must be positive.
+  </ng-container>
+  <ng-container *ngIf="control?.hasError('pattern')">
+    {{ label }} is invalid.
+  </ng-container>
+</ng-container>

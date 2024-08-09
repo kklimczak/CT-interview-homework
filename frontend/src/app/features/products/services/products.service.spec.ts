@@ -77,4 +77,28 @@ describe('ProductsService', () => {
 
     httpTestingController.verify();
   });
+
+  it('should add product', () => {
+    const product: Omit<WarehouseItem, 'id'> = {
+      imageUrl: 'http://example.com/image.jpg',
+      name: 'Product 1',
+      description: 'Description 1',
+      quantity: 10,
+      price: 100,
+    };
+
+    service.addProduct(product).subscribe((data: WarehouseItem) => {
+      expect(data).toEqual({ id: 1, ...product });
+    });
+
+    const req = httpTestingController.expectOne(
+      `${environment.apiUrl}/products`,
+    );
+
+    expect(req.request.method).toEqual('POST');
+
+    req.flush({ id: 1, ...product });
+
+    httpTestingController.verify();
+  });
 });

@@ -18,4 +18,11 @@ export class ProductsService {
   removeProduct(id: number) {
     return this.httpClient.delete(`${this.apiUrl}/products/${id}`);
   }
+
+  addProduct(product: Omit<WarehouseItem, 'id'>) {
+    return this.httpClient.post<WarehouseItem>(
+      `${this.apiUrl}/products`,
+      product,
+    );
+  }
 }

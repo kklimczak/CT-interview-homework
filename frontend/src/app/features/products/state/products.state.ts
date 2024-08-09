@@ -75,4 +75,20 @@ export class ProductsState {
       });
     });
   }
+
+  addProduct(product: Omit<WarehouseItem, 'id' | 'imageUrl'>) {
+    this.productService
+      .addProduct({ ...product, imageUrl: 'assets/logo_black.svg' })
+      .subscribe((newProduct: WarehouseItem) => {
+        const state = this.#state.getValue();
+        this.#state.next({
+          ...state,
+          ids: [...state.ids, newProduct.id],
+          entities: {
+            ...state.entities,
+            [newProduct.id]: newProduct,
+          },
+        });
+      });
+  }
 }
