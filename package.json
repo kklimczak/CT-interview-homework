@@ -2,7 +2,7 @@
   "name": "interview-homework",
   "version": "0.0.1",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "postinstall": "cd frontend && npm ci && cd ../backend && npm ci",
     "prepare": "husky"
   },
   "author": "Konrad Klimczak",
