@@ -7,6 +7,13 @@
   >
     🧻 Reset shipment
   </button>
+  <button
+    class="button"
+    (click)="completeShipment()"
+    *ngIf="shipmentMode$ | async"
+  >
+    🚚 Complete shipment
+  </button>
 </div>
 <div class="items-list">
   <app-list-item

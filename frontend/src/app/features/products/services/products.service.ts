@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { WarehouseItem } from '../../../core/models/warehouseItem';
 import { environment } from '../../../../environments/environment';
+import { ShipmentItem } from '../../../core/models/shipment-item';
 
 @Injectable({
   providedIn: 'root',
@@ -31,5 +32,9 @@ export class ProductsService {
       `${this.apiUrl}/products/${id}`,
       product,
     );
+  }
+
+  completeShipment(shipmentItems: ShipmentItem[]) {
+    return this.httpClient.post(`${this.apiUrl}/shipment`, shipmentItems);
   }
 }

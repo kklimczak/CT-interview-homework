@@ -150,4 +150,21 @@ export class ProductsState {
       shipmentQuantityById: {},
     });
   }
+
+  completeShipment() {
+    const state = this.#state.getValue();
+    const shipmentItems = Object.keys(state.shipmentQuantityById).map((id) => ({
+      id: Number(id),
+      quantity: state.shipmentQuantityById[Number(id)],
+    }));
+
+    this.productService.completeShipment(shipmentItems).subscribe(() => {
+      this.#state.next({
+        ...state,
+        shipmentQuantityById: {},
+      });
+
+      this.loadProducts();
+    });
+  }
 }

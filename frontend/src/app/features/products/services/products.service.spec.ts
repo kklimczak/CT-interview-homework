@@ -126,4 +126,30 @@ describe('ProductsService', () => {
 
     httpTestingController.verify();
   });
+
+  it('should complete shipment', () => {
+    const shipmentItems = [
+      {
+        id: 1,
+        quantity: 10,
+      },
+      {
+        id: 2,
+        quantity: 20,
+      },
+    ];
+
+    service.completeShipment(shipmentItems).subscribe();
+
+    const req = httpTestingController.expectOne(
+      `${environment.apiUrl}/shipment`,
+    );
+
+    expect(req.request.method).toEqual('POST');
+    expect(req.request.body).toEqual(shipmentItems);
+
+    req.flush({});
+
+    httpTestingController.verify();
+  });
 });

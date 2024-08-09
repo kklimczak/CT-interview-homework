@@ -75,4 +75,8 @@ export class ItemsListComponent {
   resetShipment(): void {
     this.productsState.resetShipment();
   }
+
+  completeShipment(): void {
+    this.productsState.completeShipment();
+  }
 }
