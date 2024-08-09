@@ -3,9 +3,11 @@
   <app-list-item
     *ngFor="let item of items$ | async"
     [item]="item"
+    [shipmentQuantity]="(shipmentQuantityById$ | async)?.[item.id]"
     (removeItem)="removeProduct(item.id)"
-    (addToShipment)="addItemToShipment(item.id)"
     (editItem)="openEditItemDialog(item)"
+    (addToShipment)="addItemToShipment(item.id)"
+    (removeFromShipment)="removeItemFromShipment(item.id)"
   >
   </app-list-item>
 </div>

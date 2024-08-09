@@ -11,7 +11,9 @@ import { WarehouseItem } from '../../../../core/models/warehouseItem';
 })
 export class ListItemComponent {
   @Input() item: WarehouseItem;
+  @Input() shipmentQuantity: number | undefined;
   @Output() addToShipment: EventEmitter<void> = new EventEmitter<void>();
+  @Output() removeFromShipment: EventEmitter<void> = new EventEmitter<void>();
   @Output() removeItem: EventEmitter<void> = new EventEmitter<void>();
   @Output() editItem: EventEmitter<void> = new EventEmitter<void>();
 

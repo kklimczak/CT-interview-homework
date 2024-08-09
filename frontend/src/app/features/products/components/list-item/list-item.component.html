@@ -10,9 +10,18 @@
   </div>
   <span>{{ item.quantity }}x</span>
   <span>{{ item.price | currency: "EUR" }}</span>
-  <button class="list-item--button" (click)="addToShipment.emit()">
-    Add to Shipment
-  </button>
-  <button class="list-item--button" (click)="editItem.emit()">✏️</button>
-  <button class="list-item--button" (click)="removeItem.emit()">🗑️</button>
+  <ng-container *ngIf="(shipmentQuantity || 0) > 0; else elseBlock">
+    <button class="list-item--button" (click)="addToShipment.emit()">➕</button>
+    <span>{{ shipmentQuantity }}x</span>
+    <button class="list-item--button" (click)="removeFromShipment.emit()">
+      ➖
+    </button>
+  </ng-container>
+  <ng-template #elseBlock>
+    <button class="list-item--button" (click)="addToShipment.emit()">
+      Add to Shipment
+    </button>
+    <button class="list-item--button" (click)="editItem.emit()">✏️</button>
+    <button class="list-item--button" (click)="removeItem.emit()">🗑️</button>
+  </ng-template>
 </div>

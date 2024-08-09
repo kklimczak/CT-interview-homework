@@ -16,6 +16,8 @@ import { ItemDialogComponent } from '../item-dialog/item-dialog.component';
 })
 export class ItemsListComponent {
   items$: Observable<WarehouseItem[]> = this.productsState.products$;
+  shipmentQuantityById$: Observable<{ [key: number]: number }> =
+    this.productsState.shipmentQuantityById$;
 
   constructor(
     private productsState: ProductsState,
@@ -62,6 +64,10 @@ export class ItemsListComponent {
   }
 
   addItemToShipment(id: number): void {
-    // this.itemsMockService.addToShipment(id);
+    this.productsState.addShipmentValue(id, 1);
+  }
+
+  removeItemFromShipment(id: number): void {
+    this.productsState.addShipmentValue(id, -1);
   }
 }

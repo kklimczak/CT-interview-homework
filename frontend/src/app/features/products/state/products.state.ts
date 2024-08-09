@@ -6,6 +6,7 @@ import { EntityState } from '../../../shared/models/entity-state';
 
 export interface ProductState extends EntityState<WarehouseItem> {
   pending: boolean;
+  shipmentQuantityById: { [key: number]: number };
 }
 
 export const INITIAL_PRODUCT_STATE = new InjectionToken('initialProductState', {
@@ -17,6 +18,7 @@ const initialState: ProductState = {
   ids: [],
   entities: {},
   pending: false,
+  shipmentQuantityById: {},
 };
 
 @Injectable({
@@ -37,6 +39,9 @@ export class ProductsState {
     .pipe(map((state) => state.ids.map((id) => state.entities[id])));
 
   pending$ = this.#state.asObservable().pipe(map((state) => state.pending));
+  shipmentQuantityById$ = this.#state
+    .asObservable()
+    .pipe(map((state) => state.shipmentQuantityById));
 
   loadProducts() {
     this.#state.next({
@@ -55,6 +60,7 @@ export class ProductsState {
       );
 
       this.#state.next({
+        ...this.initialState,
         ids,
         entities,
         pending: false,
@@ -105,5 +111,26 @@ export class ProductsState {
           },
         });
       });
+  }
+
+  addShipmentValue(id: number, value: number) {
+    const state = this.#state.getValue();
+
+    const maxQuantity = state.entities[id].quantity;
+
+    const newQuantity = Math.min(
+      maxQuantity,
+      (state.shipmentQuantityById[id] || 0) + value,
+    );
+
+    const shipmentQuantityById = {
+      ...state.shipmentQuantityById,
+      [id]: newQuantity,
+    };
+
+    this.#state.next({
+      ...state,
+      shipmentQuantityById,
+    });
   }
 }
