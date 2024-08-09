@@ -4,5 +4,5 @@ export interface WarehouseItem {
   name: string;
   description: string;
   quantity: number;
-  unitPrice: number;
+  price: number;
 }

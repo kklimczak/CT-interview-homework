@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { WarehouseItem } from '../../../core/models/warehouseItem';
+import { WarehouseItem } from '../../../../core/models/warehouseItem';
 
 @Component({
   selector: 'app-list-item',
